@@ -21,12 +21,22 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetMouseButton(0))
+#if UNITY_ANDROID
+        if (Input.touchCount>0)
+        {
+            var touchPosition = Camera.main.ScreenToWorldPoint(Input.touches[0].position);
+            Collider2D col = Physics2D.Raycast(touchPosition, transform.position).collider;
+            AddBese(col);
+        }
+#endif
+#if UNITY_EDITOR
+        if (Input.GetMouseButton(0))
         {
             var touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Collider2D col = Physics2D.Raycast(touchPosition, transform.position).collider;
             AddBese(col);
         }
+#endif
         else if(ChangedBases.Count!=0)
         {
             foreach(GameObject myBase in ChangedBases)
@@ -37,8 +47,20 @@ public class Player : MonoBehaviour
                     bs.SendUnits(EndPoint);
                 }
             }
-            ChangedBases.Clear();
+
+            ClearList();
         }
+    }
+
+    void ClearList()
+    {
+        foreach(GameObject myBase in ChangedBases)
+        {
+            LineRenderer lr = myBase.GetComponent<LineRenderer>();
+            lr.SetPosition(1, myBase.transform.position);
+        }
+        ChangedBases.Clear();
+        EndPoint = null;
     }
 
     void AddBese(Collider2D col)
@@ -54,6 +76,20 @@ public class Player : MonoBehaviour
                     ChangedBases.Add(obj);
                 }
                 EndPoint = obj;
+                
+                foreach(GameObject myBase in ChangedBases)
+                {
+                    LineRenderer lr = myBase.GetComponent<LineRenderer>();
+                    if(bs.Data == Data)
+                    {
+                        lr.SetPosition(0, myBase.transform.position);
+                        lr.SetPosition(1, EndPoint.transform.position);
+                    }
+                    else
+                    {
+                        lr.SetPosition(1, myBase.transform.position);
+                    }
+                }
             }
         }
     }
