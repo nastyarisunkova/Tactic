@@ -6,7 +6,6 @@ public class Base : MonoBehaviour
 {
     public PlayerData Data;
     public GameObject Unit;
-    public GameObject EndEndPoint;
     public float mass;
     public void SendUnits(GameObject EndPoint)
     {
@@ -26,10 +25,6 @@ public class Base : MonoBehaviour
         }
     }
 
-    private void OnMouseDown()
-    {
-        SendUnits(EndEndPoint);
-    }
     private void OnTriggerEnter2D(Collider2D col)
     {
         if(col.gameObject.tag == "Unit")

@@ -5,6 +5,10 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public PlayerData Data;
+
+    public List<GameObject> ChangedBases;
+    public GameObject EndPoint;
+
     void Start()
     {
         Data = new PlayerData(1, 1, 1, 1);
@@ -17,7 +21,41 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        
+        if(Input.GetMouseButton(0))
+        {
+            var touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Collider2D col = Physics2D.Raycast(touchPosition, transform.position).collider;
+            AddBese(col);
+        }
+        else if(ChangedBases.Count!=0)
+        {
+            foreach(GameObject myBase in ChangedBases)
+            {
+                Base bs = myBase.GetComponent<Base>();
+                if(bs.Data == Data)
+                {
+                    bs.SendUnits(EndPoint);
+                }
+            }
+            ChangedBases.Clear();
+        }
+    }
+
+    void AddBese(Collider2D col)
+    {
+        if(col!=null)
+        {
+            var obj = col.gameObject;
+            var bs = obj.GetComponent<Base>();
+            if(bs !=null)
+            {
+                if((bs.Data == Data)&&(!ChangedBases.Contains(obj)))
+                {
+                    ChangedBases.Add(obj);
+                }
+                EndPoint = obj;
+            }
+        }
     }
 }
 [System.Serializable]
