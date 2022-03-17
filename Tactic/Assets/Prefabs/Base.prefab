@@ -83,7 +83,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!58 &4984870660594352806
@@ -140,8 +140,14 @@ MonoBehaviour:
     defense: 0
     speed: 0
     reproductionTime: 0
+  nullData:
+    attack: 1
+    defense: 1
+    speed: 1
+    reproductionTime: 0
   Unit: {fileID: 335319694579081677, guid: 3e478af073301bb499fed0bfd9f3fd40, type: 3}
   mass: 10
+  randomRegion: 0.25
 --- !u!120 &4882177090313212550
 LineRenderer:
   m_ObjectHideFlags: 0

@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 
     public List<GameObject> ChangedBases;
     public GameObject EndPoint;
+    public string StartTag;
 
     void Start()
     {
@@ -15,7 +16,8 @@ public class Player : MonoBehaviour
         Base[] bases = FindObjectsOfType<Base>();
         foreach(Base myBase in bases)
         {
-            myBase.Data = Data; 
+            if(myBase.gameObject.tag == StartTag)
+                myBase.Data = Data; 
         }
     }
 
